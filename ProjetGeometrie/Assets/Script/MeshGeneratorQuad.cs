@@ -10,7 +10,7 @@ public class MeshGeneratorQuad : MonoBehaviour
     void Start()
     {
         m_Mf = GetComponent<MeshFilter>();
-        m_Mf.mesh = CreateBox(new Vector3(4, 1, 3));
+        m_Mf.mesh = CreateChips(new Vector3(4, 1, 3));
     }
 
     Mesh CreateStrip(int nSegments, Vector3 halfSize)
@@ -149,9 +149,6 @@ public class MeshGeneratorQuad : MonoBehaviour
             "Index" + separator + "Indices des vertices\n"
             + string.Join("\n", strings);
 
-
-
-
         /* Mesh CreateNormalizedGridXZ(int nSegmentsX, int nSegmentsZ, ComputePosDelegate computePos = null)
          {
              Mesh mesh = new Mesh();
@@ -216,7 +213,7 @@ public class MeshGeneratorQuad : MonoBehaviour
                  );
             *//*
 
-            // Sphère
+            // Sphï¿½re
             m_Mf.mesh = CreateNormalizedGridXZ(10, 5,
                 (kX, kZ) =>
                 {
@@ -273,11 +270,13 @@ public class MeshGeneratorQuad : MonoBehaviour
         Mesh mesh = new Mesh();
         mesh.name = "box";
 
-        Vector3[] vertices = new Vector3[8];
-
         int nSegments = 6; //car 6 faces
-        int[] triangles = new int[(2 * 3 * nSegments) + 1];
+        Vector3[] vertices = new Vector3[8]; //Code raga
+        
+        // Vector3[] vertices = new Vector3[(nSegments + 1) * 2]; code strip
+        int[] quads = new int[nSegments * 4];
 
+        //Regarder s'il y a pas une boucle possible pour faire l'initialisation des vertices ci dessous 
         vertices[0] = new Vector3(-halfSize.x, 0, -halfSize.z); //A
         vertices[1] = new Vector3(-halfSize.x, 0, halfSize.z); //B
         vertices[2] = new Vector3(halfSize.x, 0, halfSize.z); //C
@@ -288,72 +287,87 @@ public class MeshGeneratorQuad : MonoBehaviour
         vertices[6] = new Vector3(halfSize.x, 3, halfSize.z);
         vertices[7] = new Vector3(halfSize.x, 3, -halfSize.z);
 
-        int index = 0;
+        // 1 boucle for pour remplir triangles
 
-        for (int i = 0; i < 2*nSegments; i++)
-        {
-            triangles[index++] = 2 * i;
-            Debug.Log("index = " + index);
-            triangles[index++] = 2 * i+1;
-            Debug.Log("index = " + index);
-            triangles[index++] = 2 * i+2;
-            Debug.Log("index = " + index);
-        }
+        quads[0] = 0;
+        quads[1] = 1;
+        quads[2] = 2;
+        quads[3] = 3;
+        
+        quads[4] = 0;
+        quads[5] = 1;
+        quads[6] = 5;
+        quads[7] = 4;
+        
+        quads[8] = 3;
+        quads[9] = 2;
+        quads[10] = 6;
+        quads[11] = 7;
+        
+        quads[12] = 0;
+        quads[13] = 3;
+        quads[14] = 7;
+        quads[15] = 4;
+        
+        quads[16] = 1;
+        quads[17] = 2;
+        quads[18] = 6;
+        quads[19] = 5;
 
-        /*
-        triangles[0] = 0;
-        triangles[1] = 1;
-        triangles[2] = 2;
-
-        triangles[3] = 0;
-        triangles[4] = 2;
-        triangles[5] = 3;
-
-        triangles[6] = 0;
-        triangles[7] = 4;
-        triangles[8] = 5;
-
-        triangles[9] = 0;
-        triangles[10] = 5;
-        triangles[11] = 1;
-
-        triangles[12] = 6;
-        triangles[13] = 5;
-        triangles[14] = 1;
-
-        triangles[15] = 6;
-        triangles[16] = 1;
-        triangles[17] = 2;
-
-        triangles[18] = 7;
-        triangles[19] = 6;
-        triangles[20] = 2;
-
-        triangles[21] = 7;
-        triangles[22] = 2;
-        triangles[23] = 3;
-
-        triangles[24] = 5;
-        triangles[25] = 6;
-        triangles[26] = 7;
-
-        triangles[27] = 5;
-        triangles[28] = 7;
-        triangles[29] = 4;
-
-        triangles[30] = 4;
-        triangles[31] = 7;
-        triangles[32] = 3;
-
-        triangles[33] = 4;
-        triangles[34] = 3;
-        triangles[35] = 0;*/
+        quads[20] = 4;
+        quads[21] = 5;
+        quads[22] = 6;
+        quads[23] = 7;
 
         mesh.vertices = vertices;
-        mesh.triangles = triangles;
+        mesh.SetIndices(quads, MeshTopology.Quads, 0);
 
         return mesh;
+    }
 
+    
+    Mesh CreateChips(Vector3 halfSize)
+    {
+        Mesh mesh = new Mesh();
+        mesh.name = "chips";
+
+        int nSegments = 6; //car 6 faces
+        Vector3[] vertices = new Vector3[8]; //Code raga
+        
+        int[] quads = new int[nSegments * 2];
+
+        //Regarder s'il y a pas une boucle possible pour faire l'initialisation des vertices ci dessous 
+        vertices[0] = new Vector3(-halfSize.x, 0, -halfSize.z); //A
+        vertices[1] = new Vector3(-halfSize.x, 0, halfSize.z); //B
+        vertices[2] = new Vector3(halfSize.x, 0, halfSize.z); //C
+        vertices[3] = new Vector3(halfSize.x, 0, -halfSize.z); //D
+
+        vertices[4] = new Vector3(-halfSize.x, 3, -halfSize.z);
+        vertices[5] = new Vector3(-halfSize.x, 3, halfSize.z);
+        vertices[6] = new Vector3(halfSize.x, 3, halfSize.z);
+        vertices[7] = new Vector3(halfSize.x, 3, -halfSize.z);
+
+        // 1 boucle for pour remplir triangles
+
+        quads[0] = 0;
+        quads[1] = 1;
+        quads[2] = 2;
+        quads[3] = 3;
+        
+        quads[4] = 0;
+        quads[5] = 1;
+        quads[6] = 5;
+        quads[7] = 4;
+        
+        quads[8] = 3;
+        quads[9] = 2;
+        quads[10] = 6;
+        quads[11] = 7;
+
+        mesh.vertices = vertices;
+        mesh.SetIndices(quads, MeshTopology.Quads, 0);
+
+        return mesh;
     }
 
 }
