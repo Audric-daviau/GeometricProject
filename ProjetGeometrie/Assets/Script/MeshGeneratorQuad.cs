@@ -10,7 +10,7 @@ public class MeshGeneratorQuad : MonoBehaviour
     void Start()
     {
         m_Mf = GetComponent<MeshFilter>();
-        m_Mf.mesh = CreateStrip(6, new Vector3(4, 1, 3));
+        m_Mf.mesh = CreateRegularPolygon(new Vector3(4, 1, 3), 6);
     }
 
     Mesh CreateStrip(int nSegments, Vector3 halfSize)
@@ -375,29 +375,23 @@ public class MeshGeneratorQuad : MonoBehaviour
         Mesh mesh = new Mesh();
         mesh.name = "regularPolygon";
 
-        int nbVertices = 2*nSectors + 1 ; 
-        Vector3[] vertices = new Vector3[nbVertices];
+        int nbVertices = 2*nSectors ; 
+        Vector3[] vertices = new Vector3[nbVertices+1];
+        vertices[nSectors*2] = new Vector3(0, 0, 0);       
         int[] quads = new int[nSectors * 4];
 
-        int index = 0;
-        Vector3 leftPos = new Vector3(-halfSize.x, 0, halfSize.z);
-        //Vector3 middlePos = new Vector3(0 / 2, 0, halfSize.z);
-        Vector3 rightPos = new Vector3(halfSize.x, 0, halfSize.z);
-
-        // 1 boucle for pour remplir vertices
-        for (int i = 0; i < nSectors; i++)
+        for (int i = 0; i <= nbVertices; i+=2)
         {
-            float k = (float)i / nSectors;
-
-            Vector3 tmpPos = Vector3.Lerp(leftPos, rightPos, k);
-            vertices[index++] = tmpPos; // vertice du haut
-            
-            tmpPos = Vector3.Lerp(leftPos, rightPos, 0.5);
-            vertice[index++] = tmpPos ;
-            
-            tmpPos = Vector3.Lerp(leftPos, leftPos, k);
-            vertices[index++] = tmpPos - 2 * halfSize.z * Vector3.forward; // vertice du bas
+            vertices[i] = new Vector3(Mathf.Cos(i*Mathf.PI / nSectors) * halfSize.x, 0, 
+                                      Mathf.Sin(i*Mathf.PI / nSectors) * halfSize.z);
         }
+
+        for(int i = 1; i <= nbVertices; i+=2)
+        {
+            vertices[i] = Vector3.Lerp(vertices[i-1], vertices[i+1], 0.5f);
+        }
+
+        vertices[nbVertices-1] = Vector3.Lerp(vertices[nbVertices-2], vertices[0], 0.5f);
 
         // 1 boucle for pour remplir les quads
         /*index = 0;
