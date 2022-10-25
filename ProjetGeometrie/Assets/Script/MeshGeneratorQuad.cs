@@ -386,22 +386,39 @@ public class MeshGeneratorQuad : MonoBehaviour
                                       Mathf.Sin(i*Mathf.PI / nSectors) * halfSize.z);
         }
 
-        for(int i = 1; i <= nbVertices; i+=2)
+        for(int i = 1; i < nbVertices; i+=2)
         {
             vertices[i] = Vector3.Lerp(vertices[i-1], vertices[i+1], 0.5f);
         }
-
-        vertices[nbVertices-1] = Vector3.Lerp(vertices[nbVertices-2], vertices[0], 0.5f);
+        
+        vertices[nbVertices] = Vector3.Lerp(vertices[0], vertices[nbVertices/2], 0.5f);
 
         // 1 boucle for pour remplir les quads
-        /*index = 0;
-        for (int i = 0; i < nSectors; i++)
+        int index = 0;
+        for (int i = 0; i < nSectors ; i++)
         {
-            quads[index++] = 2 * i;
-            quads[index++] = 2 * i + 2;
-            quads[index++] = 2 * i + 3;
-            quads[index++] = 2 * i + 1;
-        }*/
+            quads[index++] = nbVertices ; //Pour relier à la vertice central
+
+            if(i != 0)
+            {
+                quads[index++] = 2 * i + 1;
+                quads[index++] = 2 * i;
+                quads[index++] = 2 * i - 1;
+            }
+            /*
+            else if(i == 1)
+            {
+                quads[index++] = i + 2;
+                quads[index++] = i + 1;
+                quads[index++] = i;
+            }*/
+            else
+            {
+                quads[index++] = 0 ;
+                quads[index++] = 1 ;
+                quads[index++] = 11 ;
+            }           
+        }
 
         mesh.vertices = vertices;
         mesh.SetIndices(quads, MeshTopology.Quads, 0);
