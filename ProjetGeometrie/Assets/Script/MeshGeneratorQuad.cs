@@ -10,7 +10,7 @@ public class MeshGeneratorQuad : MonoBehaviour
     void Start()
     {
         m_Mf = GetComponent<MeshFilter>();
-        m_Mf.mesh = CreateRegularPolygon(new Vector3(4, 1, 3), 6);
+        m_Mf.mesh = CreateRegularPolygon(new Vector3(4, 1, 4), 6);
     }
 
     Mesh CreateStrip(int nSegments, Vector3 halfSize)
@@ -382,8 +382,8 @@ public class MeshGeneratorQuad : MonoBehaviour
 
         for (int i = 0; i <= nbVertices; i+=2)
         {
-            vertices[i] = new Vector3(Mathf.Cos(i*Mathf.PI / nSectors), 0, 
-                                      Mathf.Sin(i*Mathf.PI / nSectors));
+            vertices[i] = new Vector3(Mathf.Cos(i*Mathf.PI / nSectors) * halfSize.x, 0, 
+                                      Mathf.Sin(i*Mathf.PI / nSectors) * halfSize.z);
         }
 
         for(int i = 1; i < nbVertices; i+=2)
@@ -405,18 +405,11 @@ public class MeshGeneratorQuad : MonoBehaviour
                 quads[index++] = 2 * i;
                 quads[index++] = 2 * i - 1;
             }
-            /*
-            else if(i == 1)
-            {
-                quads[index++] = i + 2;
-                quads[index++] = i + 1;
-                quads[index++] = i;
-            }*/
             else
             {
                 quads[index++] = 1 ;
                 quads[index++] = 0 ;
-                quads[index++] = 11 ;
+                quads[index++] = nbVertices - 1 ;
             }           
         }
 
@@ -425,4 +418,14 @@ public class MeshGeneratorQuad : MonoBehaviour
 
         return mesh;
     }
+
+    /*
+    Mesh CreatePacman(Vector3 halfSize, int nSectors, float startAngle =Mathf.PI/3, float endAngle = 5*Mathf.PI / 3)
+    {
+
+        mesh.vertices = vertices;
+        mesh.SetIndices(quads, MeshTopology.Quads, 0);
+
+        return mesh;        
+    }*/
 }
