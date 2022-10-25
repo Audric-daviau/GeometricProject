@@ -382,8 +382,8 @@ public class MeshGeneratorQuad : MonoBehaviour
 
         for (int i = 0; i <= nbVertices; i+=2)
         {
-            vertices[i] = new Vector3(Mathf.Cos(i*Mathf.PI / nSectors) * halfSize.x, 0, 
-                                      Mathf.Sin(i*Mathf.PI / nSectors) * halfSize.z);
+            vertices[i] = new Vector3(Mathf.Cos(i*Mathf.PI / nSectors), 0, 
+                                      Mathf.Sin(i*Mathf.PI / nSectors));
         }
 
         for(int i = 1; i < nbVertices; i+=2)
@@ -414,8 +414,8 @@ public class MeshGeneratorQuad : MonoBehaviour
             }*/
             else
             {
-                quads[index++] = 0 ;
                 quads[index++] = 1 ;
+                quads[index++] = 0 ;
                 quads[index++] = 11 ;
             }           
         }
