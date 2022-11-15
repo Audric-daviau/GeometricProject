@@ -10,7 +10,7 @@ public class MeshGeneratorQuad : MonoBehaviour
     void Start()
     {
         m_Mf = GetComponent<MeshFilter>();
-        m_Mf.mesh = CreateRegularPolygon(new Vector3(4, 1, 4), 6);
+        m_Mf.mesh = CreatePacman(new Vector3(4, 1, 4), 20);
     }
 
     Mesh CreateStrip(int nSegments, Vector3 halfSize)
@@ -377,7 +377,6 @@ public class MeshGeneratorQuad : MonoBehaviour
 
         int nbVertices = 2*nSectors ; 
         Vector3[] vertices = new Vector3[nbVertices+1];
-        vertices[nSectors*2] = new Vector3(0, 0, 0);       
         int[] quads = new int[nSectors * 4];
 
         for (int i = 0; i <= nbVertices; i+=2)
@@ -419,13 +418,38 @@ public class MeshGeneratorQuad : MonoBehaviour
         return mesh;
     }
 
-    /*
-    Mesh CreatePacman(Vector3 halfSize, int nSectors, float startAngle =Mathf.PI/3, float endAngle = 5*Mathf.PI / 3)
+    Mesh CreatePacman(Vector3 halfSize, int nSectors, float startAngle = Mathf.PI/3, float endAngle = 5*Mathf.PI / 3)
     {
+        Mesh mesh = new Mesh();
+        mesh.name = "Pacman";
+
+        int nbVertices = 2*nSectors + 1 ; 
+        Vector3[] vertices = new Vector3[nbVertices+1];
+        int[] quads = new int[nSectors * 4];
+
+        for (int i = 0; i <= nbVertices; i++)
+        {
+            float angle = i * (startAngle - endAngle) / (2*nSectors) ;
+            vertices[i] = new Vector3(Mathf.Cos(startAngle + angle) * halfSize.x, 0, 
+                                      Mathf.Sin(startAngle + angle) * halfSize.z);            
+        }
+        
+        vertices[nbVertices] = Vector3.zero;
+
+        // 1 boucle for pour remplir les quads
+        int index = 0;
+        for (int i = 0; i < nSectors ; i++)
+        {
+            quads[index++] = nbVertices ; //Pour relier à la vertice central
+            quads[index++] = 2 * i + 2;
+            quads[index++] = 2 * i + 1;
+            quads[index++] = 2 * i;
+                       
+        }
 
         mesh.vertices = vertices;
         mesh.SetIndices(quads, MeshTopology.Quads, 0);
 
         return mesh;        
-    }*/
+    }
 }
