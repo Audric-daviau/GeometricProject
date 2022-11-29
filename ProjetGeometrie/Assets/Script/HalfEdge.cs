@@ -33,7 +33,7 @@ namespace HalfEdge
           //magic happens
             vertices = new List<Vertex>(mesh.vertices.Length);
             edges = new List<HalfEdge>(mesh.vertices.Length + 4);
-            faces = new List<Face>(mesh.vertices.Length - 2);
+            faces = new List<Face>(mesh.triangles.Length / 2);
 
             //list of vertex
             for (int i = 0; i < mesh.vertices.Length; i++)
@@ -46,18 +46,42 @@ namespace HalfEdge
             {
                 edges[i].index = i;
                 edges[i].sourceVertex = vertices[i];
+                vertices[i].outgoingEdge = edges[i];
             }
             //list of faces
             int j = 0;
-            for(int i = 0; i< mesh.triangles.Length / 6 ; i++)
+            for(int i = 0; i< mesh.triangles.Length /2 ; i++)
             {
                 faces[i].index = i;
                 faces[i].edge = edges[j];
                 j += 4;
             }
-
+            int k = 0;
             //faire le calcul pour les next twin des edges....
+            for(int i = 0; i < edges.Count; i++)
+            {
+                
+                //derterminer les previous edges
+                if(i == 0)
+                {
+                    edges[i].prevEdge = edges[3];
+                }
+                else
+                {
+                    edges[i].prevEdge = edges[i - 1];
+                }
+                //dertermininer les faces incidentes
+                if (i % 4 == 0)
+                {
+                    edges[i].face = faces[k++];
+                    edges[i].nextEdge = edges[i - 4];
 
+                }
+                else
+                {
+                    edges[i].nextEdge = edges[i + 1];
+                }
+            }
 
         }
         public Mesh ConvertToFaceVertexMesh()
