@@ -2,15 +2,15 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-using Unity.Mathematics;
-using static Unity.Mathematics.math;
+// using Unity.Mathematics;
+// using static Unity.Mathematics.math;
 
 namespace WingedEdge
 {
     public class WingedEdge
     {   
         public int index;
-        public Vertex debutVertex;
+        public Vertex startVertex;
         public Vertex endVertex;
         public Face leftFace;
         public Face rightFace;
@@ -100,7 +100,7 @@ namespace WingedEdge
                 if(this == tempWingedEdge.startVertex)
                     tempWingedEdge = tempWingedEdge.startCWEdge ;
                 else
-                    tempWingedEdge.endCWEdge;
+                    tempWingedEdge = tempWingedEdge.endCWEdge;
             }
             return AdjacentEdges;
         }
@@ -242,7 +242,7 @@ namespace WingedEdge
                     {
                         wingedEdge = new WingedEdge(edges.Count, vertices[debut], vertices[fin], face, null);
                         edges.Add(wingedEdge);
-                        dicoEdges.Add(key,wingedEdge);
+                        edgesDico.Add(key,wingedEdge);
                     }
                     else //Sinon on complete l'edge 
                         wingedEdge.leftFace = face ;
@@ -272,14 +272,14 @@ namespace WingedEdge
                         faceEdges[j].startCCWEdge = faceEdges[(j + 1) % faceEdges.Count];
                     }
                 }
-                //Update CCW and CW Edge for borderEdges
-                for (int i = 0; i < edges.Count; i++)
+            }
+            //Update CCW and CW Edge for borderEdges
+            for (int i = 0; i < edges.Count; i++)
+            {
+                if(edges[i].leftFace == null)
                 {
-                    if(edges[i].leftFace == null)
-                    {
-                        edges[i].startCCWEdge = edges[i].FindLastStartCCW();
-                        edges[i].endCWEdge = edges[i].FindLastEndCW();
-                    }
+                    edges[i].startCCWEdge = edges[i].FindLastStartCCW();
+                    edges[i].endCWEdge = edges[i].FindLastEndCW();
                 }
             }
         }
@@ -391,7 +391,7 @@ namespace WingedEdge
                         + separator;
             }
 
-            string str  = "Vertex" + separator + separator + separator + separator + separator + separator + separator + "WingedEdges" + separator + separator + separator + separator + separator + separator + separator + separator + separator + separator + "Faces\n"
+            str  = "Vertex" + separator + separator + separator + separator + separator + separator + separator + "WingedEdges" + separator + separator + separator + separator + separator + separator + separator + separator + separator + separator + "Faces\n"
                         + "Index" + separator + "Position" + separator + "Edge" + separator + "Edges Adj" + separator + "Face Adj" + separator + "Border Edges" + separator + separator 
                         + "Index" + separator + "Start Vertex" + separator + "End Vertex" + separator + "Left Face" + separator + "Right Face" + separator + "Start CCW Edge" + separator + "Start CW Edge" + separator + "End CW Edge" + separator + "End CCW Edge" + separator + separator 
                         + "Index" + separator + "Edge" + separator + "CW Edges" + separator + "CW Vertices\n"
@@ -399,7 +399,7 @@ namespace WingedEdge
             return str;
         }
 
-        public void DrawGizmos(bool drawVertices,bool drawEdges,bool drawFaces)
+        public void DrawGizmos(bool drawVertices,bool drawEdges,bool drawFaces, Transform transform)
         {
             //magic happens
             Gizmos.color = Color.red;
