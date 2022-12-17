@@ -141,6 +141,56 @@ namespace WingedEdge
     {
         public int index;
         public WingedEdge edge;
+
+        public Face(int ind)
+        {
+            this.index = ind;
+        }
+
+        public List<WingedEdge> GetFaceEdges()
+        {
+            List<WingedEdge> faceEdges = new List<WingedEdge>();
+            WingedEdge wingedEdge = edge;
+
+            //Edge CW
+            while (!faceEdges.Contains(wingedEdge))
+            {
+                faceEdges.Add(wingedEdge);
+                if(this == wingedEdge.rightFace)
+                    wingedEdge = wingedEdge.endCCWEdge ;
+                else
+                    wingedEdge = wingedEdge.startCCWEdge ;
+            }
+            return faceEdges;
+        }
+
+        public List<Vertex> GetFaceVertex()
+        {
+            List<WingedEdge> faceEdges = GetFaceEdges();
+            List<Vertex> faceVertices = new List<Vertex>();
+            //Vertice CW
+            for (int i = 0; i < faceEdges.Count; i++)
+            {
+                //faceVertices.Add((faceEdges[i].rightFace == this) ? faceEdges[i].startVertex : faceEdges[i].endVertex);
+                if(faceEdges[i].rightFace == this)
+                    faceVertices.Add(faceEdges[i].startVertex) ;
+                else
+                    faceVertices.Add(faceEdges[i].endVertex) ;
+            }
+            return faceVertices;
+        }
+
+        public List<WingedEdge> GetBorderEdges()
+        {
+            List<WingedEdge> borderEdges = new List<WingedEdge>();
+            List<WingedEdge> adjacentEdges = GetFaceEdges();
+            for (int i = 0; i < adjacentEdges.Count; i++)
+            {
+                if (adjacentEdges[i].leftFace == null)
+                    borderEdges.Add(adjacentEdges[i]);
+            }
+            return borderEdges;
+        }
     }
 
     public class WingedEdgeMesh

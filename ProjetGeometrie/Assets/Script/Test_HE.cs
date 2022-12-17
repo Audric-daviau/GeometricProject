@@ -41,7 +41,7 @@ public class Test_HE : MonoBehaviour
         vertices[6] = new Vector3(halfSize.x, 3, halfSize.z);
         vertices[7] = new Vector3(halfSize.x, 3, -halfSize.z);
 
-        // 1 boucle for pour remplir triangles
+        // 1 boucle for pour remplir les triangles
 
         quads[0] = 0;
         quads[1] = 1;
