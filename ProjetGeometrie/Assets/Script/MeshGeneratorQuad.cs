@@ -148,8 +148,9 @@ public class MeshGeneratorQuad : MonoBehaviour
             + "Index" + separator + "Position" + separator + separator +
             "Index" + separator + "Indices des vertices\n"
             + string.Join("\n", strings);
+    }
 
-        /* Mesh CreateNormalizedGridXZ(int nSegmentsX, int nSegmentsZ, ComputePosDelegate computePos = null)
+    /* Mesh CreateNormalizedGridXZ(int nSegmentsX, int nSegmentsZ, ComputePosDelegate computePos = null)
          {
              Mesh mesh = new Mesh();
              mesh.name = "normalizedGrid";
@@ -190,54 +191,54 @@ public class MeshGeneratorQuad : MonoBehaviour
          }*/
 
 
-        /*void Start()
-        {
-            m_Mf = GetComponent<MeshFilter>();
-            //m_Mf.mesh = CreateStrip(7, new Vector3(4, 1, 3));
-            //m_Mf.mesh = CreateNormalizedGridXZ(7, 4);
+    /*void Start()
+    {
+        m_Mf = GetComponent<MeshFilter>();
+        //m_Mf.mesh = CreateStrip(7, new Vector3(4, 1, 3));
+        //m_Mf.mesh = CreateNormalizedGridXZ(7, 4);
 
-            //Cylindre
-            *//* m_Mf.mesh = CreateNormalizedGridXZ(20, 40,
-                 (kX, kZ) =>
-                 {
-                     float rho, theta, y;
+        //Cylindre
+        *//* m_Mf.mesh = CreateNormalizedGridXZ(20, 40,
+             (kX, kZ) =>
+             {
+                 float rho, theta, y;
 
-                     // coordinates mapping de (kX,kZ) -> (rho,theta,y)
-                     theta = kX * 2 * Mathf.PI;
-                     y = kZ * 6;
-                     //rho = 3 + .25f * Mathf.Sin(kZ*2*Mathf.PI*4) ;
-                     rho = m_Profile.Evaluate(kZ) * 2;
-                     return new Vector3(rho * Mathf.Cos(theta), y, rho * Mathf.Sin(theta));
-                     //return new Vector3(Mathf.Lerp(-1.5f, 5.5f, kX), 1, Mathf.Lerp(-2, 4, kZ));
-                 }
-                 );
-            *//*
+                 // coordinates mapping de (kX,kZ) -> (rho,theta,y)
+                 theta = kX * 2 * Mathf.PI;
+                 y = kZ * 6;
+                 //rho = 3 + .25f * Mathf.Sin(kZ*2*Mathf.PI*4) ;
+                 rho = m_Profile.Evaluate(kZ) * 2;
+                 return new Vector3(rho * Mathf.Cos(theta), y, rho * Mathf.Sin(theta));
+                 //return new Vector3(Mathf.Lerp(-1.5f, 5.5f, kX), 1, Mathf.Lerp(-2, 4, kZ));
+             }
+             );
+        *//*
 
-            // Sph�re
-            m_Mf.mesh = CreateNormalizedGridXZ(10, 5,
-                (kX, kZ) =>
-                {
-                    float rho, theta, phi;
+        // Sph�re
+        m_Mf.mesh = CreateNormalizedGridXZ(10, 5,
+            (kX, kZ) =>
+            {
+                float rho, theta, phi;
 
-                    // coordinates mapping de (kX,kZ) -> (rho,theta,phi)
-                    theta = kX * 2 * Mathf.PI;
-                    phi = kZ * Mathf.PI;
-                    rho = 2 + .55f * Mathf.Cos(kX * 2 * Mathf.PI * 8)
-                                    * Mathf.Sin(kZ * 2 * Mathf.PI * 6);
-                    //rho = 3 + .25f * Mathf.Sin(kZ*2*Mathf.PI*4) ;
-                    //rho = m_Profile.Evaluate(kZ) * 2;
+                // coordinates mapping de (kX,kZ) -> (rho,theta,phi)
+                theta = kX * 2 * Mathf.PI;
+                phi = kZ * Mathf.PI;
+                rho = 2 + .55f * Mathf.Cos(kX * 2 * Mathf.PI * 8)
+                                * Mathf.Sin(kZ * 2 * Mathf.PI * 6);
+                //rho = 3 + .25f * Mathf.Sin(kZ*2*Mathf.PI*4) ;
+                //rho = m_Profile.Evaluate(kZ) * 2;
 
-                    return new Vector3(rho * Mathf.Cos(theta) * Mathf.Sin(phi),
-                        rho * Mathf.Cos(phi),
-                        rho * Mathf.Sin(theta) * Mathf.Sin(phi));
-                    //return new Vector3(Mathf.Lerp(-1.5f, 5.5f, kX), 1, Mathf.Lerp(-2, 4, kZ));
-                }
-                );
+                return new Vector3(rho * Mathf.Cos(theta) * Mathf.Sin(phi),
+                    rho * Mathf.Cos(phi),
+                    rho * Mathf.Sin(theta) * Mathf.Sin(phi));
+                //return new Vector3(Mathf.Lerp(-1.5f, 5.5f, kX), 1, Mathf.Lerp(-2, 4, kZ));
+            }
+            );
 
-            GUIUtility.systemCopyBuffer = ConvertToCSV("\t");
-            Debug.Log(ConvertToCSV("\t"));
-        }*/
-    }
+        GUIUtility.systemCopyBuffer = ConvertToCSV("\t");
+        Debug.Log(ConvertToCSV("\t"));
+    }*/
+
     Mesh CreateQuad(Vector3 halfSize)
     {
         Mesh mesh = new Mesh();
