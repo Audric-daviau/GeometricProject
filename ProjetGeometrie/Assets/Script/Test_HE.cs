@@ -3,6 +3,7 @@ using System.Text;
 using System;
 using System.Collections.Generic;
 using HalfEdge;
+using WingedEdge;
 using UnityEngine;
 using System.IO;
 
@@ -15,8 +16,8 @@ public class Test_HE : MonoBehaviour
     {
         m_Mf = GetComponent<MeshFilter>();
         m_Mf.mesh = CreateBox(new Vector3(4, 1, 4));
-        HalfEdgeMesh m_half = new HalfEdgeMesh(m_Mf.mesh);
-        GUIUtility.systemCopyBuffer = m_half.ConvertToCSVFormat();
+        WingedEdgeMesh m_winged = new WingedEdgeMesh(m_Mf.mesh);
+        GUIUtility.systemCopyBuffer = m_winged.ConvertToCSVFormat();
 
     }
     Mesh CreateBox(Vector3 halfSize)
